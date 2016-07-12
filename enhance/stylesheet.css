@@ -23,6 +23,13 @@ div {
 	z-index:1;
 }
 
+#wrapper {
+	width:100%;
+	clear:both;
+	margin-top:104px;
+	position:absolute;
+}
+
 .nav {
 	background-color:#990033;
 	border-top:5px solid;
@@ -31,26 +38,25 @@ div {
 	width:120px;
 	float:left;
 	position:fixed;
-	margin-top:104px;
 }
 
 .main {
 	background-color:#CCCC99;
 	border-radius:20px;
-	float:left;
-	width:89.5%;
-	margin-left:130px;
+	height:auto;
+	width:auto;
+	margin-top:10px;
 	margin-right:10px;
-	margin-top:114px;
+	margin-left:130px;
 	padding:10px;
 }
 
 .footer {
 	color:#D2D3D6;
 	text-align:center;
-	width:89.5%;
-	float:left;
-	margin-left:130px;
+	width:auto;
+	margin-left:140px;
+	margin-right:20px;
 	margin-top:50px;
 	border-top:#D2D3D6 2px solid;
 }
