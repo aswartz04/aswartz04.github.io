@@ -1,0 +1,56 @@
+/*Primary style for portfolio*/
+
+body {
+	padding:0px;
+	margin:0px;
+}
+
+div {
+	font-family:Tahoma, serif;
+	height:100px;
+	width:100px;
+	font-weight: bold;
+	color:#FFFFFF;
+}
+
+.titlebar {
+	background-color:#666633;
+	border-bottom:5px solid;
+	border-bottom-color:#919133; /*#383B1D*/
+	position:fixed;
+	height:100px;
+	width:100%;
+	z-index:1;
+}
+
+.nav {
+	background-color:#990033;
+	border-top:5px solid;
+	border-top-color:#690124;
+	height:100%;
+	width:120px;
+	float:left;
+	position:fixed;
+	margin-top:104px;
+}
+
+.main {
+	background-color:#CCCC99;
+	border-radius:20px;
+	float:left;
+	width:89.5%;
+	margin-left:130px;
+	margin-right:10px;
+	margin-top:114px;
+	padding:10px;
+}
+
+.footer {
+	color:#D2D3D6;
+	text-align:center;
+	width:89.5%;
+	float:left;
+	margin-left:130px;
+	margin-top:50px;
+	border-top:#D2D3D6 2px solid;
+}
