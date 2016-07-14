@@ -13,11 +13,16 @@ div {
 	color:#FFFFFF;
 }
 
+li {
+	list-style:square;
+}
+
 .titlebar {
 	background-color:#666633;
 	border-bottom:5px solid;
 	border-bottom-color:#919133; /*#383B1D*/
 	position:fixed;
+	display:inline;
 	height:100px;
 	width:100%;
 	z-index:1;
@@ -35,14 +40,17 @@ div {
 	border-top:5px solid;
 	border-top-color:#690124;
 	height:100%;
-	width:120px;
+	width:100px;
 	float:left;
 	position:fixed;
+	padding:10px;
 }
 
 .main {
 	background-color:#CCCC99;
 	border-radius:20px;
+	color:#000000;
+	font-weight:normal;
 	height:auto;
 	width:auto;
 	margin-top:10px;
