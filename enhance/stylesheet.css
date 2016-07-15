@@ -17,6 +17,21 @@ li {
 	list-style:square;
 }
 
+ol li{
+	list-style:decimal;
+}
+
+#titleimage{
+	float:left;
+}
+
+#titleword{
+	float:left;
+	width:auto;
+	margin-left:40px;
+	margin-top:10px;
+}
+
 .titlebar {
 	background-color:#666633;
 	border-bottom:5px solid;
