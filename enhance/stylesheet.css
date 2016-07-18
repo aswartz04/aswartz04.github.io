@@ -21,6 +21,12 @@ ol li{
 	list-style:decimal;
 }
 
+pre {
+	background-color:#E6E6E8;
+	border:2px solid #B3B3B3;
+	width:50%;
+}
+
 #titleimage{
 	float:left;
 }

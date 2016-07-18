@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Allan's Portfolio | Projects:95CI</title>
+	<meta charset="utf-8" />
+	<link type="text/css" rel="stylesheet" href="../../enhance/stylesheet.css" />
+	<link rel="icon" href="../../images/sitebuild_main.png" />
+</head>
+<body>
+	<div class="titlebar">
+		<div id="titleimage">
+			<img src="../../images/sitebuild_main.png" />
+		</div>
+		<div id="titleword">
+			<h1>Allan's Portfolio</h1>
+		</div>
+	</div>
+	<div id="wrapper">	
+		<div class="nav">
+			<h4><a href="../../index.html">Main</a></h4>
+			<h4><a href="../projects.html">Projects</a></h4>
+			<h4><a href="../resume.html">Resume</a></h4>
+		</div> 
+		<div class="main">
+			<h1>Exploring Confidence Intervals</h1>
+<p>In most applications, a 95% confidence interval is used with parameter estimation. In the case of a sampled mean, the true mean is 95% confident to fall within a set interval based on a standard normal distribution. With a sample size of <strong>n=10</strong> simulated from <strong>N(0,2)</strong>, each sample's computed 95% C.I. is checked to see if the true mean falls inside it. Over the course of 1000 iterations, 950 of them are expected to be within the interval.</p>
+<pre class="r"><code>yes &lt;- 0
+
+for (i in 1:1000){
+
+        r_sample &lt;- rnorm(10, 0, 2)
+        findmean &lt;- mean(r_sample)
+        findconfidlow &lt;- findmean-1.96*(2/sqrt(10))
+        findconfidhigh &lt;- findmean+1.96*(2/sqrt(10))
+            if ((findconfidlow&lt;0) &amp; (findconfidhigh&gt;0)) yes &lt;- yes+1 
+
+        }
+yes</code></pre>
+<pre><code>## [1] 950</code></pre>
+<p>The standard normal is used when the variance is known. This is usually not the case in practical applications, so instead the t-distribution is used. Now the sample, once again of size <strong>n=10</strong> will be generated from a t-distribution with <strong>df=9</strong>. As before, with 950 of the 1000 iterations are expected to fall inside of the 95% C.I.</p>
+<pre class="r"><code>yes &lt;- 0
+
+for (i in 1:1000){
+
+        r_sample &lt;- rt(10, 9)
+        findmean &lt;- mean(r_sample)
+        findsd &lt;- sd(r_sample)
+        findconfidlow &lt;- findmean-2.26*(findsd/sqrt(10))
+        findconfidhigh &lt;- findmean+2.26*(findsd/sqrt(10))
+            if ((findconfidlow&lt;0) &amp; (findconfidhigh&gt;0)) yes &lt;- yes+1 
+
+        }
+yes</code></pre>
+<pre><code>## [1] 945</code></pre>
+			<p><a href="../projects.html">&lt;Back to Projects</a></p>
+		</div>
+		<div class="footer">
+			<p>End of page information.</p>
+		</div>
+	</div>
+</body>
+</html>
