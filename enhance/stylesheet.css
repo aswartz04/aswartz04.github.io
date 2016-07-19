@@ -13,6 +13,14 @@ div {
 	color:#FFFFFF;
 }
 
+a{
+	color:#FFFFFF;
+}
+
+a:hover{
+	text-decoration:none;
+}
+
 li {
 	list-style:square;
 }
