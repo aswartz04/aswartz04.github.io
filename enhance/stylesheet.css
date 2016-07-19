@@ -13,11 +13,11 @@ div {
 	color:#FFFFFF;
 }
 
-a{
+.nav a{
 	color:#FFFFFF;
 }
 
-a:hover{
+.nav a:hover{
 	text-decoration:none;
 }
 
@@ -32,7 +32,7 @@ ol li{
 pre {
 	background-color:#E6E6E8;
 	border:2px solid #B3B3B3;
-	width:50%;
+	width:40%;
 }
 
 #titleimage{
@@ -66,6 +66,7 @@ pre {
 }
 
 .nav {
+	font-family:Trebuchet MS;
 	background-color:#990033;
 	border-top:5px solid;
 	border-top-color:#690124;
