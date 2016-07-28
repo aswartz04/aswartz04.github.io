@@ -21,6 +21,16 @@ div {
 	text-decoration:none;
 }
 
+.main a{
+	color:#4DBCF7;
+	text-decoration:none;
+}
+
+.main a:visited{
+		color:#2D7296;
+		text-decoration:none;
+}
+
 li {
 	list-style:square;
 }
