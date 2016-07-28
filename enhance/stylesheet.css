@@ -50,7 +50,7 @@ pre {
 .titlebar {
 	background-color:#666633;
 	border-bottom:5px solid;
-	border-bottom-color:#919133; /*#383B1D*/
+	border-bottom-color:#383B1D; /*#919133*/ 
 	position:fixed;
 	display:inline;
 	height:100px;
