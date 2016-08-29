@@ -127,6 +127,7 @@
 ## 
 ## </code></pre>
 <p>Comparing the predicted values of the test set with the actual values contained in the customer class column, the results do reasonably well here. The accuracy is consistent with the statement made during the modelling process that it is 99%. The issue as presented before is evident in the table however, in that Agricultural is thrown into other categories. In fact, there are only 4 total observations of this class, so it is extremely difficult to differentiate these between the others. There isn't enough observations in the first place to find any patterns between them.</p>
+
 <p>This only uses a distance measurement to classify, so it is worth trying out another method to see if any improvements can be made.</p>
 <p><strong>Step 5 - Improving the Model.</strong> To look for any improvements to classifying this set, a new kind of process will be used. Specifically, a decision-based tree model using the C5.0 algorithm will be performed to see if different results can be achieved.</p>
 <pre><code>## C5.0 
