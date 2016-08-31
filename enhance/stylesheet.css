@@ -41,8 +41,9 @@ ol li{
 }
 
 pre {
-	background-color:#E6E6E8;
-	border:2px solid #B3B3B3;
+	color:#FFFFFF;
+	background-color:#26262B; /*#E6E6E8*/
+	border-left:6px solid #990033; /*#B3B3B3*/
 	width:90%;
 	padding: 6px;
 }
