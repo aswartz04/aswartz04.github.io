@@ -1,0 +1,60 @@
+---
+output: html_fragment
+---
+
+#Boostrapping Parameters Using a Multinomial Disribution
+
+One very powerful resampling technique is bootstrapping.  Among the many uses of bootstrapping, parameter estimation for a distribution is a common one.  A multinomial distribution has a total count of observations divided up into cells.  The probability of landing in a cell is unique, but all of them are defined by a single parameter.  Typically this is denoted as $\theta$.  This is the parameter to be estimated.
+
+Some specifics need to be initialized before the bootstrap procdure can be done.
+
+```{r}
+#loop iterations
+m <- 1000
+#total count across all cells
+n <- 3839
+
+#cell probabilities
+p <- c(0.5089,0.2411,0.2411,0.0089)
+
+#initialize parameter found by bootstrap
+theta.star <- numeric(m)
+```
+
+Now that the setup is complete, $\theta$ can be estimated for this 4-cell multinomial.
+
+```{r}
+#bootstrap procedure
+for(i in 1:m){
+		y <- rmultinom(1,n,p)
+		#the MLE for theta was found to be quadratic and so the following coefficients are used to compute it
+		a <- y[1,]+y[2,]+y[3,]+y[4,]
+		b <- -(y[1,]-2*y[2,]-2*y[3,]+y[4,])
+		c <- -2*y[4,]
+		theta.star[i] <- (-b+sqrt(b^2-4*a*c))/(2*a)
+	}
+cut <- seq(0.01,0.07,0.001)
+
+hist(theta.star,breaks=cut,prob=T)
+```
+
+The methodology behind the bootstrap procedure is to use maximum likelihood estimation for $\theta$ after a sample is taken from multinomial under the specified conditions.  This is iterated over many times to provide a histogram of possible values for $\theta$.
+
+Another popular method would be to create a "population" from multinomial with the specified conditions and then resample from those values with replacement many times, each time finding the MLE.  Either form of bootstrapping will yield very similar results.
+
+```{r}
+#the histogram should be cenetered around this estimated value for the parameter
+theta.star.mean <- mean(theta.star)
+theta.star.mean
+
+theta.star.sd <- sd(theta.star)
+theta.star.sd
+
+#95% confidence intervals
+theta.LCL <- quantile(theta.star,0.025)
+theta.LCL
+theta.UCL <- quantile(theta.star,0.975)
+theta.UCL
+```
+
+The purpose of the histogram is to show that the distribution for $\theta$ is approximately normal, which allows for a 95% confidence interval to be found for the average, or estimated value of the parameter.

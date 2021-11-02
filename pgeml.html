@@ -1,0 +1,205 @@
+<div id="classification-of-pges-customers-by-electricity-usage" class="section level1">
+<h1>Classification of PG&amp;E’s Customers by Electricity Usage</h1>
+<p><strong>Step 1 - Collecting Data.</strong> The premise of this investigation involves taking data involving electricity usage and trying to classify the customer type based on these values. The data was collected by PG&amp;E’s own data team and is available to the public on their site. The period of data collection was done in the fourth quarter of 2015.</p>
+<p><strong>Step 2 - Exploring and Preparing the Data.</strong> The dataset contains numerous variables, some of which are important and some of which are not necessary to assist with classification. First, it is best to get a feel for what to expect in the dataset.</p>
+<pre><code>## 'data.frame':    7733 obs. of  8 variables:
+##  $ ZipCode       : int  93101 93101 93105 93105 93110 93110 93117 93117 93201 93202 ...
+##  $ Month         : int  10 10 10 10 10 10 10 10 10 10 ...
+##  $ Year          : int  2015 2015 2015 2015 2015 2015 2015 2015 2015 2015 ...
+##  $ CustomerClass : Factor w/ 4 levels &quot;Elec- Agricultural&quot;,..: 2 4 2 4 2 4 2 4 4 1 ...
+##  $ Combined      : Factor w/ 2 levels &quot;N&quot;,&quot;Y&quot;: 2 2 2 2 2 2 2 2 1 2 ...
+##  $ TotalCustomers: num  0 0 0 0 0 0 0 0 311 0 ...
+##  $ TotalkWh      : num  0 0 0 0 0 ...
+##  $ AveragekWh    : num  NA NA NA NA NA NA NA NA 548 NA ...</code></pre>
+<p>There are a total of 8 variables. Each observation is an individual California Zip Code, including the month, year, the class of customer, how many of those customers reside in the area, and electricity usage measurements. The Combined column indicates PG&amp;E’s method of grouping, in which very small groups of customers are allocated into neighboring zip codes, hence the missing values and zero usage.</p>
+<p>The goal now is to use variables to attempt to predict what kind of class a customer is solely based on electricity usage and household count without any information of their location in California. While zip codes are no longer required to classify in this way, other variables need to be examined.</p>
+<p>There were a few actions needed to be taken to clean the data before modelling could take place. Eliminating any observations that were combined with other ones does not actually remove customer counts, so they were filtered out as they provided no additional information. The entire set was of the year 2015, so this column was removed as well. Month should have no bearing in the process since each observation appears in every month. The customer class variable was slightly revised to leave out the electricity part of the name; all observations were based on electricity.</p>
+<p>Here is the data once again after all cleaning is finished.</p>
+<pre><code>##  CustomerClass      TotalCustomers     TotalkWh          AveragekWh   
+##  Length:2889        Min.   :   18   Min.   :    7816   Min.   :   98  
+##  Class :character   1st Qu.:  376   1st Qu.:  400641   1st Qu.:  524  
+##  Mode  :character   Median : 1292   Median : 2109704   Median :  660  
+##                     Mean   : 4519   Mean   : 3496635   Mean   : 1992  
+##                     3rd Qu.: 7320   3rd Qu.: 5633483   3rd Qu.:  964  
+##                     Max.   :27819   Max.   :44948850   Max.   :57647</code></pre>
+<pre><code>## 
+## Agricultural   Commercial  Residential 
+##  0.004153686  0.188300450  0.807545864</code></pre>
+<p>Customers and electricity usage seem to have extremely high variability. This actually may be useful in helping the algorithm of choice to divide the data and classify it easier. One potential problem is that Agricultural customers make up less than 1% of the dataset. With 2889 observations, that is an extremely small subset. The biggest challenge may be trying to correctly group those few customers into their respective category.</p>
+<p><strong>Step 3 - Training the Model.</strong> The first model that will be used on the data is kNN. However, due to the wide range of values and the nature of the algorithm, it is necessary to first scale everything down before training the model.</p>
+<pre><code>##  TotalCustomers       TotalkWh          AveragekWh      
+##  Min.   :0.00000   Min.   :0.000000   Min.   :0.000000  
+##  1st Qu.:0.01288   1st Qu.:0.008741   1st Qu.:0.007402  
+##  Median :0.04583   Median :0.046770   Median :0.009766  
+##  Mean   :0.16189   Mean   :0.077631   Mean   :0.032910  
+##  3rd Qu.:0.26265   3rd Qu.:0.125179   3rd Qu.:0.015048  
+##  Max.   :1.00000   Max.   :1.000000   Max.   :1.000000  
+##       CustomerClass 
+##  Agricultural:  12  
+##  Commercial  : 544  
+##  Residential :2333  
+##                     
+##                     
+## </code></pre>
+<p>The normalization was done using the minimum and maximum scaling technique. Distances computed will no longer have variables dominating the others.</p>
+<p>The dataset will then be split into two sets, one for training and validation and the other to be used for testing. It is critical that the proportion of customer classes in either one are as close as possible to produce reasonable results.</p>
+<pre><code>## 
+## Agricultural   Commercial  Residential 
+##  0.004610951  0.188472622  0.806916427</code></pre>
+<pre><code>## 
+## Agricultural   Commercial  Residential 
+##  0.004610951  0.188472622  0.806916427</code></pre>
+<p>The training and validation set is comprised of 60% of the observations, while the test set will be the remaining 40%. The two tables show the proportions for each of these sets, and the consistency between them is preserved.</p>
+<pre><code>## k-Nearest Neighbors 
+## 
+## 1735 samples
+##    3 predictor
+##    3 classes: 'Agricultural', 'Commercial', 'Residential' 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 1562, 1561, 1562, 1562, 1561, 1561, ... 
+## Resampling results across tuning parameters:
+## 
+##   k   Accuracy   Kappa    
+##    3  0.9907813  0.9702198
+##    5  0.9896253  0.9664313
+##    7  0.9896286  0.9664197
+##    9  0.9902066  0.9680376
+##   11  0.9890506  0.9643651
+##   13  0.9884758  0.9625861
+##   15  0.9890506  0.9643857
+## 
+## Kappa was used to select the optimal model using  the one SE rule.
+## The final value used for the model was k = 15.</code></pre>
+<p>Using a 10-fold cross-validation method of sampling as well as various values of k, it was determined that k=11 provides the most efficient model. Indeed, it has an impressive accuracy of 99% and a Kappa of 0.9686, the metric used to determine model performance.</p>
+<p><strong>Step 4 - Evaluating Model Performance.</strong> Even with the high accuracy of the model, it is not ready to be considered the best possible model until it is put to use on another dataset. As such, the test set will be used to determine this.</p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |         N / Table Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  1154 
+## 
+##  
+##                       | Predicted Customer Class 
+## Actual Customer Class |  Commercial | Residential |   Row Total | 
+## ----------------------|-------------|-------------|-------------|
+##          Agricultural |           4 |           0 |           4 | 
+##                       |       0.003 |       0.000 |             | 
+## ----------------------|-------------|-------------|-------------|
+##            Commercial |         213 |           4 |         217 | 
+##                       |       0.185 |       0.003 |             | 
+## ----------------------|-------------|-------------|-------------|
+##           Residential |           2 |         931 |         933 | 
+##                       |       0.002 |       0.807 |             | 
+## ----------------------|-------------|-------------|-------------|
+##          Column Total |         219 |         935 |        1154 | 
+## ----------------------|-------------|-------------|-------------|
+## 
+## </code></pre>
+<p>Comparing the predicted values of the test set with the actual values contained in the customer class column, the results do reasonably well here. The accuracy is consistent with the statement made during the modelling process that it is 99%. The issue as presented before is evident in the table however, in that Agricultural is thrown into other categories. In fact, there are only 4 total observations of this class, so it is extremely difficult to differentiate these between the others. There isn’t enough observations in the first place to find any patterns between them.</p>
+<p>This only uses a distance measurement to classify, so it is worth trying out another method to see if any improvements can be made.</p>
+<p><strong>Step 5 - Improving the Model.</strong> To look for any improvements to classifying this set, a new kind of process will be used. Specifically, a decision-based tree model using the C5.0 algorithm will be performed to see if different results can be achieved.</p>
+<pre><code>## Loading required package: C50</code></pre>
+<pre><code>## Loading required package: plyr</code></pre>
+<pre><code>## Warning in predict.C5.0(modelFit, newdata, trial = submodels$trials[j]):
+## 'trials' should be &lt;= 1 for this object. Predictions generated using 1
+## trials
+
+## Warning in predict.C5.0(modelFit, newdata, trial = submodels$trials[j]):
+## 'trials' should be &lt;= 1 for this object. Predictions generated using 1
+## trials
+
+## Warning in predict.C5.0(modelFit, newdata, trial = submodels$trials[j]):
+## 'trials' should be &lt;= 1 for this object. Predictions generated using 1
+## trials
+
+## Warning in predict.C5.0(modelFit, newdata, trial = submodels$trials[j]):
+## 'trials' should be &lt;= 1 for this object. Predictions generated using 1
+## trials
+
+## Warning in predict.C5.0(modelFit, newdata, trial = submodels$trials[j]):
+## 'trials' should be &lt;= 1 for this object. Predictions generated using 1
+## trials
+
+## Warning in predict.C5.0(modelFit, newdata, trial = submodels$trials[j]):
+## 'trials' should be &lt;= 1 for this object. Predictions generated using 1
+## trials
+
+## Warning in predict.C5.0(modelFit, newdata, trial = submodels$trials[j]):
+## 'trials' should be &lt;= 1 for this object. Predictions generated using 1
+## trials
+
+## Warning in predict.C5.0(modelFit, newdata, trial = submodels$trials[j]):
+## 'trials' should be &lt;= 1 for this object. Predictions generated using 1
+## trials</code></pre>
+<pre><code>## C5.0 
+## 
+## 1735 samples
+##    3 predictor
+##    3 classes: 'Agricultural', 'Commercial', 'Residential' 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold, repeated 10 times) 
+## Summary of sample sizes: 1562, 1561, 1561, 1562, 1562, 1561, ... 
+## Resampling results across tuning parameters:
+## 
+##   model  winnow  trials  Accuracy   Kappa    
+##   rules  FALSE    1      0.9886539  0.9634105
+##   rules  FALSE   10      0.9904402  0.9690587
+##   rules  FALSE   20      0.9904983  0.9692826
+##   rules   TRUE    1      0.9886522  0.9634256
+##   rules   TRUE   10      0.9903820  0.9688158
+##   rules   TRUE   20      0.9903827  0.9688137
+##   tree   FALSE    1      0.9885380  0.9630598
+##   tree   FALSE   10      0.9902106  0.9683476
+##   tree   FALSE   20      0.9904980  0.9692545
+##   tree    TRUE    1      0.9885363  0.9630595
+##   tree    TRUE   10      0.9904402  0.9690052
+##   tree    TRUE   20      0.9903249  0.9686345
+## 
+## Kappa was used to select the optimal model using  the largest value.
+## The final values used for the model were trials = 20, model = rules
+##  and winnow = FALSE.</code></pre>
+<p>Instead of one 10-fold cross-validation, it was extended to be repeated 10 times using this method in order to improve model performance.</p>
+<p>Going back to the unscaled data, as decision trees do not need this to be successful, the best fitted model was now automatically found to be a tree model with 10 trials and a winnow of False. The accuracy is once again 99% and the Kappa value is 0.9749. Already this is looking slightly better than the model found through kNN, but as before it is best to see results using the test set.</p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |           N / Row Total |
+## |         N / Table Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  1154 
+## 
+##  
+##                       | Predicted Customer Class 
+## Actual Customer Class | Agricultural |   Commercial |  Residential |    Row Total | 
+## ----------------------|--------------|--------------|--------------|--------------|
+##          Agricultural |            1 |            2 |            1 |            4 | 
+##                       |        0.250 |        0.500 |        0.250 |        0.003 | 
+##                       |        0.001 |        0.002 |        0.001 |              | 
+## ----------------------|--------------|--------------|--------------|--------------|
+##            Commercial |            0 |          216 |            1 |          217 | 
+##                       |        0.000 |        0.995 |        0.005 |        0.188 | 
+##                       |        0.000 |        0.187 |        0.001 |              | 
+## ----------------------|--------------|--------------|--------------|--------------|
+##           Residential |            0 |            3 |          930 |          933 | 
+##                       |        0.000 |        0.003 |        0.997 |        0.808 | 
+##                       |        0.000 |        0.003 |        0.806 |              | 
+## ----------------------|--------------|--------------|--------------|--------------|
+##          Column Total |            1 |          221 |          932 |         1154 | 
+## ----------------------|--------------|--------------|--------------|--------------|
+## 
+## </code></pre>
+<p>The accuracy found using the C5.0 algorithm is identical to the previous one. However this could be considered an improvement only because it correctly identified one of the Agricultural customers. Even though this is still not the majority of them, there is at least evidence that it can correctly classify this difficult category.</p>
+<p>It does appear that Commercial and Agriculture get mixed up, whereas Residential appears different enough from either of them so as not to get mixed together. One reason classifying this particular dataset is useful is to determine potential electricity usage rates depending on how they are labeled. Thresholds could be set based on the number of customers and usage, and rates adjusted accordingly for any given region’s usage. Without even inspecting location, these details could be chosen using the decision tree model. There may be some contention between Agricultural and Commercial customers, as they may potentially be mixed together, so careful consideration of the cost of incorrectly labeling an Agricultural customer as a Commercial one should be exercised. Overall, the majority of customers are either Commercial or Residential, and this model performs well enough to distinguish between the two of them.</p>
+</div>

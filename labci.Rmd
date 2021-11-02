@@ -1,0 +1,40 @@
+---
+output: html_fragment
+---
+
+#Exploring Confidence Intervals
+
+In most applications, a 95% confidence interval is used with parameter estimation.  In the case of a sampled mean, the true mean is 95% confident to fall within a set interval based on a standard normal distribution.  With a sample size of **n=10** simulated from **N(0,2)**, each sample's computed 95% C.I. is checked to see if the true mean falls inside it.  Over the course of 1000 iterations, 950 of them are expected to be within the interval.
+
+```{r}
+yes <- 0
+
+for (i in 1:1000){
+
+		r_sample <- rnorm(10, 0, 2)
+		findmean <- mean(r_sample)
+		findconfidlow <- findmean-1.96*(2/sqrt(10))
+		findconfidhigh <- findmean+1.96*(2/sqrt(10))
+			if ((findconfidlow<0) & (findconfidhigh>0)) yes <- yes+1 
+
+		}
+yes
+```
+
+The standard normal is used when the variance is known.  This is usually not the case in practical applications, so instead the t-distribution is used.  Now the sample, once again of size **n=10** will be generated from a t-distribution with **df=9**.  As before, with 950 of the 1000 iterations are expected to fall inside of the 95% C.I.
+
+```{r}
+yes <- 0
+
+for (i in 1:1000){
+
+		r_sample <- rt(10, 9)
+		findmean <- mean(r_sample)
+		findsd <- sd(r_sample)
+		findconfidlow <- findmean-2.26*(findsd/sqrt(10))
+		findconfidhigh <- findmean+2.26*(findsd/sqrt(10))
+			if ((findconfidlow<0) & (findconfidhigh>0)) yes <- yes+1 
+
+		}
+yes
+```
