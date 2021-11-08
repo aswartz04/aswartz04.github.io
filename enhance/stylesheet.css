@@ -61,9 +61,9 @@ pre {
 }
 
 .titlebar {
-	background-color:#666633;
+	background-color:#659DBD;
 	border-bottom:5px solid;
-	border-bottom-color:#383B1D; /*#919133*/ 
+	border-bottom-color:#8D8741; /*#919133*/ 
 	position:fixed;
 	display:inline;
 	height:100px;
@@ -80,9 +80,9 @@ pre {
 
 .nav {
 	font-family:Trebuchet MS;
-	background-color:#990033;
+	background-color:#DAAD86;
 	border-top:5px solid;
-	border-top-color:#690124;
+	border-top-color:#BC986A;
 	height:100%;
 	width:100px;
 	float:left;
@@ -91,7 +91,7 @@ pre {
 }
 
 .main {
-	background-color:#CCCC99;
+	background-color:#FBEEC1;
 	border-radius:20px;
 	color:#000000;
 	font-weight:normal;
